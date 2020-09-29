@@ -1,6 +1,6 @@
 {
   "name": "vue-scratch-crd",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -15,7 +15,7 @@
   "main": "src/lib/scratch/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ybr54323/vue-scratch.git"
+    "url": "git@github.com:ybr54323/vue-scratch-crd.git"
   },
   "dependencies": {
     "core-js": "^3.6.5",
