@@ -20,7 +20,7 @@ Vue.use(Scratch)
 
 ```vue
 <template>
-<Scratch @on-ok="onOk" @on-timeout="onTimeout" :configParams="configParams"></Scratch>
+<Scratch @on-ok="onOk" @on-timeout="onTimeout" @on-reload="onReload" :configParams="configParams"></Scratch>
 </template>
 <script>
 export default {
@@ -45,6 +45,9 @@ export default {
         },
         onTimeout(Scratch) { // 返回Scratch组件实例的指针
             Scratch.onReload(this.configParams) // onReload可使Scratch实例刷新，可以重新定义参数
+        },
+        onReload() { // 用户刷新的钩子
+
         }
     }
 }

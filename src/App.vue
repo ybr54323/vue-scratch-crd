@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Scratch :config-params="{duration: 1}" @on-timeout="test"></Scratch>
+    <Scratch :config-params="{}" @on-timeout="test"></Scratch>
   </div>
 </template>
 
@@ -20,5 +20,6 @@ export default {
 * {
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 </style>

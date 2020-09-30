@@ -67,7 +67,7 @@ Chicken.prototype.initPoints = function () {
       this.points.push(p)
     }
   }
-  console.log(this.points)
+  // console.log(this.points)
 }
 
 function Tap(x, y, params) {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="scratch-con">
     <div class="header">
       <span class="text-des">验证：请摁住鼠标左键，刮出两只小鸡</span>
       <svg @click="onReload" t="1601347403565" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -23,7 +23,7 @@
         <div style="user-focus: none;user-select: none" class="success-text">恭喜您成功刮出小鸡，继续下一步操作吧</div>
       </div>
     </div>
-    <canvas v-show="!isOk" id="canvas">请换一个现代浏览器</canvas>
+    <canvas class="canvas" v-show="!isOk" id="canvas">请换一个现代浏览器</canvas>
   </div>
 </template>
 
@@ -67,7 +67,7 @@ export default {
       const vm = this
       vm.isOk = false
       const canvas = document.querySelector(id)
-      canvas.style.display = id === 'canvas' ? 'unset' : 'none'
+      canvas.style.display = id === 'canvas' ? 'block' : 'none'
       const ctx = canvas.getContext('2d')
 
       const virtual = document.createElement('canvas'); // 画布外画
@@ -298,6 +298,7 @@ export default {
 </script>
 
 <style scoped>
+
 .header {
   display: flex;
   justify-content: space-around;
