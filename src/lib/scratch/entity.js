@@ -83,6 +83,7 @@ Tap.prototype.draw = function () {
   this.ctx.beginPath()
   this.ctx.drawImage(this.virtualCanvas, this.x, this.y, this.r, this.r, this.x, this.y, this.r, this.r)
   this.ctx.closePath()
+
 }
 
 module.exports = {

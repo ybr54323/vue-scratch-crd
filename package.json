@@ -11,7 +11,7 @@
   },
   "license": "MIT",
   "description": "仿阿里云登录刮刮验证",
-  "author": "杨秉瑞",
+  "author": "ybr54323",
   "main": "src/lib/scratch/index.js",
   "repository": {
     "type": "git",
