@@ -56,12 +56,13 @@ export default {
            width: customWidth = 300,
            height: customHeight = 200,
            id = 'canvas',
-           layerBgColor = 'gray',
-           bottomBgColor = 'skyBlue',
+           layerBgColor = null,
+           bottomBgColor = null,
            targetWidth = 50,
            targetHeight = 50,
            targetCount = 2,
            tapRadius = 20,
+           duration = null // 耗时上限
          } = {}) {
       const vm = this
       vm.isOk = false
@@ -83,7 +84,7 @@ export default {
       const chickenList = [] // 鸡的数组
       const tapTail = [] // 运动轨迹
       let rId = vm.rId = '' // animation id
-
+      let startTimestamp = null // loop开始的时间戳
       let count = 0
 
       function changeDomSize(domId = null, w = 300, h) {
@@ -126,7 +127,6 @@ export default {
                 const {pageX, pageY} = touch
                 const offsetX = pageX - offsetLeft
                 const offsetY = pageY - offsetTop
-                console.log(offsetX, offsetY)
                 for (let i = 0; i < tapTail.length; i++) { // handle repeat
                   if (tapTail[i].x === offsetX && tapTail[i].y === offsetY) {
                     return
@@ -144,7 +144,7 @@ export default {
                     }
                     ctx.closePath()
                   }
-                  console.log(`总个数: ${c.points.length}\n点中个数: ${c.activeCount}`)
+                  // console.log(`总个数: ${c.points.length}\n点中个数: ${c.activeCount}`)
                   if (c.activeCount >= c.points.length) { // all active
                     c.finish = true
                   }
@@ -180,7 +180,7 @@ export default {
                     }
                     ctx.closePath()
                   }
-                  console.log(`总个数: ${c.points.length}\n点中个数: ${c.activeCount}`)
+                  // console.log(`总个数: ${c.points.length}\n点中个数: ${c.activeCount}`)
                   if (c.activeCount >= c.points.length) { // all active
                     c.finish = true
                   }
@@ -195,14 +195,26 @@ export default {
             function loop() {
               if (!rId) {
                 drawBase() // 画外画布画一次就够
+                startTimestamp = new Date().getTime()
               }
-              const gradient = ctx.createLinearGradient(0, 0, width, height)
-              gradient.addColorStop(0, "#333");
-              gradient.addColorStop(0.2, "white");
-              gradient.addColorStop(0.5, "#666");
-              gradient.addColorStop(0.8, "white");
-              gradient.addColorStop(1, "#333");
-              ctx.fillStyle = gradient
+              if (duration !== null && typeof duration === 'number' && new Date().getTime() - startTimestamp >= 1000 * duration) { // 超出限时还没刮完
+                cancelAnimationFrame(rId)
+                vm.$emit('on-timeout', vm)
+                vm.isOk = false
+                return
+              }
+              let fillStyle
+              if (typeof layerBgColor === 'string' && layerBgColor.length) {
+                fillStyle = layerBgColor
+              } else {
+                fillStyle = ctx.createLinearGradient(0, 0, width, height)
+                fillStyle.addColorStop(0, "#333");
+                fillStyle.addColorStop(0.2, "white");
+                fillStyle.addColorStop(0.5, "#666");
+                fillStyle.addColorStop(0.8, "white");
+                fillStyle.addColorStop(1, "#333");
+              }
+              ctx.fillStyle = fillStyle
               ctx.fillRect(0, 0, width, height)
               tapTail.forEach(t => {
                 t.draw()
@@ -223,14 +235,18 @@ export default {
               let cWidth, cHeight
               cWidth = targetWidth
               cHeight = targetHeight
-
-              const gradient = ctx.createLinearGradient(0, 0, width, 0)
-              gradient.addColorStop(0, "#6495ED");
-              gradient.addColorStop(0.1, "#AFEEEE");
-              gradient.addColorStop(0.5, "#B0E0E6");
-              gradient.addColorStop(0.9, "#AFEEEE");
-              gradient.addColorStop(1, "#6495ED");
-              virtualCtx.fillStyle = gradient
+              let fillStyle
+              if (typeof bottomBgColor === 'string' && bottomBgColor.length) {
+                fillStyle = bottomBgColor
+              } else {
+                fillStyle = ctx.createLinearGradient(0, 0, width, 0)
+                fillStyle.addColorStop(0, "#6495ED");
+                fillStyle.addColorStop(0.1, "#AFEEEE");
+                fillStyle.addColorStop(0.5, "#B0E0E6");
+                fillStyle.addColorStop(0.9, "#AFEEEE");
+                fillStyle.addColorStop(1, "#6495ED");
+              }
+              virtualCtx.fillStyle = fillStyle
               virtualCtx.fillRect(0, 0, width, height)
               while (chickenList.length < targetCount) {
                 const c = new Chicken(random(cWidth, width - cWidth), random(cHeight, height - cHeight), {
@@ -243,7 +259,6 @@ export default {
                 c.initPoints()
                 chickenList.push(c)
               }
-              console.log(chickenList)
               chickenList.forEach(c => {
                 c.draw()
               })
@@ -252,9 +267,30 @@ export default {
         }
       }
     },
-    onReload() {
-      this.$nextTick(() => {
-        this.init()
+    onReload({
+               width: customWidth = 300,
+               height: customHeight = 200,
+               id = 'canvas',
+               layerBgColor = null,
+               bottomBgColor = null,
+               targetWidth = 50,
+               targetHeight = 50,
+               targetCount = 2,
+               tapRadius = 20,
+               duration = null // 耗时上限
+             } = {}) {
+      this.$emit('on-reload', true)
+      this.init({
+        customWidth,
+        customHeight,
+        id,
+        layerBgColor,
+        bottomBgColor,
+        targetWidth,
+        targetHeight,
+        targetCount,
+        tapRadius,
+        duration,
       })
     }
   },

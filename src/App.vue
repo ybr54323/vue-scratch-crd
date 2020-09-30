@@ -1,13 +1,17 @@
 <template>
   <div>
-    <Scratch></Scratch>
+    <Scratch :config-params="{duration: 1}" @on-timeout="test"></Scratch>
   </div>
 </template>
 
 <script>
 export default {
   name: 'App',
-  components: {
+  components: {},
+  methods: {
+    test(vm) {
+      // vm.onReload({duration: 1})
+    }
   }
 }
 </script>
