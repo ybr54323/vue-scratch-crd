@@ -6,14 +6,14 @@
 
 <script>
 export default {
-  name: 'App',
+  name: "App",
   components: {},
   methods: {
     test(vm) {
       // vm.onReload({duration: 1})
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
