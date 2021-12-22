@@ -6,6 +6,8 @@
 
 ![使用方法](https://ftp.bmp.ovh/imgs/2020/09/a19f92bc76d29a90.gif)
 
+### [live demo](https://ybr54323.github.io/vue-scratch-crd/)
+
 ### 安装
 ```
 npm install vue-scratch-crd --save
